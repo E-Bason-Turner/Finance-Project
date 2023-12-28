@@ -2,7 +2,12 @@ package financeproject2;
 
 import java.util.ArrayList;
 import java.lang.Math;
-
+/**
+ * The class gathers the statistics used for the stock simulations in terms of the log-returns of the daily stock changes.
+ *
+ * @author Zach Archibald and Evan Turner
+ * @version 2023-12-12
+ */
 public class GatherDriftsAndVolatilities 
 {
 	public static ArrayList<ArrayList<Double>> gatherStatisticsForStocks(ArrayList<ArrayList<Double>> LogReturnsOfStocks,
@@ -17,6 +22,8 @@ public class GatherDriftsAndVolatilities
 			Double driftOfStock = computeDriftOfStock(logReturnsOfStock);
 			Double volatilityOfStock = computeVolatilityOfStock(logReturnsOfStock, driftOfStock);
 
+			
+			//Collect statistics into one arraylist for easier use in calculations 
 			ArrayList<Double> driftsAndVolatilitiesOfStock = new ArrayList<Double>();
 			driftsAndVolatilitiesOfStock.add(driftOfStock);
 			driftsAndVolatilitiesOfStock.add(volatilityOfStock);
@@ -27,6 +34,13 @@ public class GatherDriftsAndVolatilities
 		return driftsAndVolatilitiesOfStocks;
 	}
 	
+	/**
+	 * Calculates log return of stocks for calculations of drift and volatility by subtracting 
+	 * consecutive prices and then taking the logarithm of those.
+	 * 
+	 * @param dailyPricesOfStock
+	 * @return- Double representing LogReturnsOfStock
+	 */
 	public static ArrayList<Double> generateLogReturnsOfStock(ArrayList<Double> dailyPricesOfStock)
 	{
 		ArrayList<Double> LogReturnsOfStock = new ArrayList<Double>();
@@ -40,12 +54,24 @@ public class GatherDriftsAndVolatilities
 		return LogReturnsOfStock;
 	}
 	
+	/**
+	 * Calculates drift of the stock from the log returns of stock
+	 * 
+	 * @param logReturnsOfStock
+	 * @return-Double representing yearly drift of a stock
+	 */
 	private static Double computeDriftOfStock(ArrayList<Double> logReturnsOfStock) 
 	{
 		Double drift = 250.0 * (sum(logReturnsOfStock)) / logReturnsOfStock.size();
 		return drift;
 	}
 
+	/**
+	 * Calculates volatility of the stock from the log returns of stock and drifts of a stock
+	 * 
+	 * @param logReturnsOfStock
+	 * @return-Double representing yearly volatility of a stock
+	 */
 	private static Double computeVolatilityOfStock(ArrayList<Double> logReturnsOfStock, Double driftOfStock) 
 	{
 		Double volatilityOfStock = 250 * variance(logReturnsOfStock, driftOfStock / 250);
@@ -53,6 +79,12 @@ public class GatherDriftsAndVolatilities
 		return volatilityOfStock;
 	}
 
+	/**
+	 * Computes the sum of an ArrayList
+	 * 
+	 * @param data
+	 * @return-the sum of an ArrayList
+	 */
 	public static Double sum(ArrayList<Double> data) 
 	{
 		Double sum = 0.0;
@@ -64,6 +96,13 @@ public class GatherDriftsAndVolatilities
 		return sum;
 	}
 	
+	/**
+	 * Computes the variance of an ArrayList as the average of the squared and centered data
+	 * 
+	 * @param data
+	 * @param mean
+	 * @return-variance of an ArrayList
+	 */
 	private static Double variance(ArrayList<Double> data, Double mean) 
 	{
 		ArrayList<Double> centeredData = center(data, mean);
@@ -75,6 +114,13 @@ public class GatherDriftsAndVolatilities
 		return variance;
 	}
 
+	/**
+	 * Centers the data according to the mean
+	 * 
+	 * @param data
+	 * @param mean
+	 * @return-ArrayList containing the centered data
+	 */
 	private static ArrayList<Double> center(ArrayList<Double> data, Double mean) 
 	{
 		ArrayList<Double> centeredData = new ArrayList<Double>();
@@ -87,6 +133,12 @@ public class GatherDriftsAndVolatilities
 		return centeredData;
 	}
 
+	/**
+	 * Squares each element of an ArrayList
+	 * 
+	 * @param data
+	 * @return
+	 */
 	private static ArrayList<Double> squareElements(ArrayList<Double> data) 
 	{
 		ArrayList<Double> dataSquared = new ArrayList<Double>();
@@ -98,7 +150,12 @@ public class GatherDriftsAndVolatilities
 		return dataSquared;
 	}
 	
-	
+	/**
+	 * Helper to generate the log returns
+	 * 
+	 * @param dailyPricesOfStocks
+	 * @return
+	 */
 	public static ArrayList<ArrayList<Double>> generateLogReturnsOfStocks(ArrayList<ArrayList<Double>> dailyPricesOfStocks)
 	{
 		ArrayList<ArrayList<Double>> logReturnsOfStocks = new ArrayList<ArrayList<Double>>();
